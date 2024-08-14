@@ -170,7 +170,7 @@ func main() {
 	fmt.Printf("Fastest: %s\n", searchBenchmarkGeneric.Fastest)
 
 	// Example usage of CompareSortAlgorithms
-	sortedList = sorting.QuickSort(algo.GenerateList(10000000, 1, 1000000))
+	sortedList = sorting.QuickSort(algo.GenerateList(100000, 1, 1000000))
 	sortBenchmark := algo.CompareSortAlgorithms(sortedList)
 	fmt.Println("\nSort Benchmark Results:")
 	for _, result := range sortBenchmark.Results {
