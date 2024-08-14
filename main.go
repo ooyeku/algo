@@ -146,12 +146,13 @@ func main() {
 	fmt.Printf("Jump Search Generic: Target '%s' found at index %d\n", targetJumpGeneric, indexJumpGeneric)
 
 	// Example usage of CompareSearchAlgorithms
-	sortedList = sorting.QuickSort(algo.GenerateList(1_000_000, 1, 1_000_000_000))
+	sortedList = sorting.QuickSort(algo.GenerateList(1000, 1, 1_000_000_000))
 	searchBenchmark := algo.CompareSearchAlgorithms(sortedList)
 	fmt.Println("Search Benchmark Results:")
 	for _, result := range searchBenchmark.Results {
 		fmt.Printf("%s: Time: %v, Memory: %d bytes\n", result.Algorithm, result.Time, result.Memory)
 	}
+	fmt.Printf("Fastest: %s\n", searchBenchmark.Fastest)
 
 	// Example usage of CompareSearchAlgorithmsGeneric
 	unsortedGenericList := algo.GenerateListGeneric(1_000_000, 1, 1_000_000_000)
@@ -167,4 +168,13 @@ func main() {
 		fmt.Printf("%s: Time: %v, Memory: %d bytes\n", result.Algorithm, result.Time, result.Memory)
 	}
 	fmt.Printf("Fastest: %s\n", searchBenchmarkGeneric.Fastest)
+
+	// Example usage of CompareSortAlgorithms
+	sortedList = sorting.QuickSort(algo.GenerateList(10000000, 1, 1000000))
+	sortBenchmark := algo.CompareSortAlgorithms(sortedList)
+	fmt.Println("\nSort Benchmark Results:")
+	for _, result := range sortBenchmark.Results {
+		fmt.Printf("%s: Time: %v, Memory: %d bytes\n", result.Algorithm, result.Time, result.Memory)
+	}
+	fmt.Printf("Fastest: %s\n", sortBenchmark.Fastest)
 }
