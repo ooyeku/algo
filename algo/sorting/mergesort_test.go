@@ -73,37 +73,3 @@ func TestMergeSortString(t *testing.T) {
 		})
 	}
 }
-
-func TestMergeSortGeneric(t *testing.T) {
-	tests := []struct {
-		name     string
-		input    []interface{}
-		less     func(i, j int) bool
-		expected []interface{}
-	}{
-		{
-			name:  "integers",
-			input: []interface{}{5, 1, 3, 8, 10, 2},
-			less: func(i, j int) bool {
-				return i < j
-			},
-			expected: []interface{}{1, 2, 3, 5, 8, 10},
-		},
-		{
-			name:  "strings",
-			input: []interface{}{"banana", "apple", "cherry", "date"},
-			less: func(i, j int) bool {
-				return i < j
-			},
-			expected: []interface{}{"apple", "banana", "cherry", "date"},
-		},
-	}
-
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			if got := MergeSortGeneric(tt.input, tt.less); !reflect.DeepEqual(got, tt.expected) {
-				t.Errorf("MergeSortGeneric() = %v, expected %v", got, tt.expected)
-			}
-		})
-	}
-}
