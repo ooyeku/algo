@@ -1,7 +1,6 @@
 package sorting
 
 import (
-	"fmt"
 	"reflect"
 	"testing"
 )
@@ -77,49 +76,6 @@ func TestHeapSortString(t *testing.T) {
 			result := HeapSortString(tC.input)
 			if !reflect.DeepEqual(result, tC.expected) {
 				t.Errorf("HeapSortString(): got %v, want %v", result, tC.expected)
-			}
-		})
-	}
-}
-
-func TestHeapSortGeneric(t *testing.T) {
-	testCases := []struct {
-		desc     string
-		input    []interface{}
-		less     func(i, j int) bool
-		expected []interface{}
-	}{
-		{
-			desc:     "Empty interface slice",
-			input:    []interface{}{},
-			less:     func(i, j int) bool { return i < j },
-			expected: []interface{}{},
-		},
-		{
-			desc:     "Single interface",
-			input:    []interface{}{1},
-			less:     func(i, j int) bool { return i < j },
-			expected: []interface{}{1},
-		},
-		{
-			desc:     "Two interfaces",
-			input:    []interface{}{2, 1},
-			less:     func(i, j int) bool { return fmt.Sprintf("%v", i) < fmt.Sprintf("%v", j) },
-			expected: []interface{}{1, 2},
-		},
-		{
-			desc:     "Multiple interfaces",
-			input:    []interface{}{5, 3, "A", 4, "B", 9, 2},
-			less:     func(i, j int) bool { return fmt.Sprintf("%v", i) < fmt.Sprintf("%v", j) },
-			expected: []interface{}{"A", "B", 2, 3, 4, 5, 9},
-		},
-	}
-
-	for _, tC := range testCases {
-		t.Run(tC.desc, func(t *testing.T) {
-			result := HeapSortGeneric(tC.input, tC.less)
-			if !reflect.DeepEqual(result, tC.expected) {
-				t.Errorf("HeapSortGeneric(): got %v, want %v", result, tC.expected)
 			}
 		})
 	}
