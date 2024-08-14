@@ -123,7 +123,9 @@ func (a *Atom) String() string {
 // If the value is an int, it assumes a size of 8 bytes (assuming 64-bit int).
 // If the value is a float64, it assumes a size of 8 bytes (assuming 64-bit float).
 // If the value is a string, it returns the length of the string.
-// If the value is of any other type, it panics with the message "Unsupported type for size calculation".
+// If the value is a []byte, it returns the length of the slice.
+// If the value is a bool, it returns 1.
+// If the value is of any other type, it returns 0.
 func (a *Atom) Size() int {
 	switch v := a.value.(type) {
 	case int:
@@ -132,7 +134,11 @@ func (a *Atom) Size() int {
 		return 8 // assuming 64-bit float
 	case string:
 		return len(v)
+	case []byte:
+		return len(v)
+	case bool:
+		return 1
 	default:
-		panic("Unsupported type for size calculation")
+		return 0
 	}
 }

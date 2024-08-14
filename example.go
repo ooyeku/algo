@@ -2,7 +2,9 @@ package main
 
 import (
 	"fmt"
+
 	"github.com/ooyeku/algo/algo"
+	"github.com/ooyeku/algo/algo/base"
 	"github.com/ooyeku/algo/algo/searching"
 	"github.com/ooyeku/algo/algo/sorting"
 )
@@ -178,4 +180,32 @@ func main() {
 	}
 	fmt.Printf("Fastest: %s\n", sortBenchmark.Fastest)
 	fmt.Printf("Most Memory Efficient: %s\n", sortBenchmark.MostMemoryEfficient)
+
+	// Example usage of base abstractions
+	one := base.NewInteger(1)
+	two := base.NewInteger(2)
+	three := base.NewInteger(3)
+	four := base.NewInteger(4)
+	five := base.NewInteger(5)
+
+	fmt.Println(one.Compare(two))
+	fmt.Println(one.Compare(three))
+	fmt.Println(one.Compare(four))
+	fmt.Println(one.Compare(five))
+
+	pointOne := base.NewFloat(0.1)
+	pointTwo := base.NewFloat(0.2)
+	pointThree := base.NewFloat(0.3)
+	pointFour := base.NewFloat(0.4)
+	pointFive := base.NewFloat(0.5)
+
+	fmt.Println(pointOne.Compare(pointTwo))
+	fmt.Println(pointOne.Compare(pointThree))
+	fmt.Println(pointOne.Compare(pointFour))
+	fmt.Println(pointOne.Compare(pointFive))
+
+	node := base.NewAtom(one)
+	fmt.Println(node.Hash())
+	fmt.Println(node.String())
+	fmt.Println(node.Size())
 }
