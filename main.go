@@ -177,4 +177,5 @@ func main() {
 		fmt.Printf("%s: Time: %v, Memory: %d bytes\n", result.Algorithm, result.Time, result.Memory)
 	}
 	fmt.Printf("Fastest: %s\n", sortBenchmark.Fastest)
+	fmt.Printf("Most Memory Efficient: %s\n", sortBenchmark.MostMemoryEfficient)
 }

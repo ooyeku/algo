@@ -29,11 +29,12 @@ type SortResult struct {
 }
 
 // SortBenchmark represents the results of benchmarking different sorting algorithms.
-// It stores the sorting results, the size of the input list, and the name of the fastest algorithm.
+// It stores the sorting results, the size of the input list, the name of the fastest algorithm, and the name of the most memory-efficient algorithm.
 type SortBenchmark struct {
-	Results  []SortResult
-	ListSize int
-	Fastest  string
+	Results             []SortResult
+	ListSize            int
+	Fastest             string
+	MostMemoryEfficient string
 }
 
 // CompareSortAlgorithms benchmarks multiple sorting algorithms on a given list and returns a SortBenchmark
@@ -73,14 +74,19 @@ func CompareSortAlgorithms(list []int) SortBenchmark {
 		return sorting.IntroSort(append([]int(nil), list...))
 	}))
 
-	// get the fastest sort algorithm
+	// get the fastest and most memory-efficient sort algorithms
 	fastest := benchmark.Results[0]
+	mostMemoryEfficient := benchmark.Results[0]
 	for _, result := range benchmark.Results {
 		if result.Time < fastest.Time {
 			fastest = result
 		}
+		if result.Memory < mostMemoryEfficient.Memory {
+			mostMemoryEfficient = result
+		}
 	}
 	benchmark.Fastest = fastest.Algorithm
+	benchmark.MostMemoryEfficient = mostMemoryEfficient.Algorithm
 
 	return benchmark
 }
@@ -179,14 +185,19 @@ func CompareSortAlgorithmsGeneric(list []interface{}, less func(i, j int) bool) 
 		return sorting.IntroSortGeneric(append([]interface{}(nil), list...), less)
 	}))
 
-	// get the fastest sort algorithm
+	// get the fastest and most memory-efficient sort algorithms
 	fastest := benchmark.Results[0]
+	mostMemoryEfficient := benchmark.Results[0]
 	for _, result := range benchmark.Results {
 		if result.Time < fastest.Time {
 			fastest = result
 		}
+		if result.Memory < mostMemoryEfficient.Memory {
+			mostMemoryEfficient = result
+		}
 	}
 	benchmark.Fastest = fastest.Algorithm
+	benchmark.MostMemoryEfficient = mostMemoryEfficient.Algorithm
 
 	return benchmark
 }
