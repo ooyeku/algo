@@ -19,18 +19,41 @@ import (
 	"hash/fnv"
 )
 
-// Atom represents a basic object that implements the Object interface.
+// Atom represents a generic atomic value that can be compared, hashed,
+// converted to a string, and determine its size.
+//
+// The value of Atom is stored as an interface{} type, allowing it to hold
+// values of any type.
 type Atom struct {
 	value interface{}
 }
 
-// NewAtom creates a new Atom with the given value.
+// NewAtom creates a new Atom object initialized with the given value.
 func NewAtom(value interface{}) *Atom {
 	return &Atom{value: value}
 }
 
-// Compare compares the Atom with another Object.
-// It returns -1 if the Atom is less than the other Object, 0 if they are equal, and 1 if the Atom is greater.
+// Compare compares the Atom object with another object and returns an integer
+// representing their relationship.
+//
+// The provided 'other' object must be of type *Atom. If it is not, a panic is
+// triggered with the message "Cannot compare Atom with non-Atom object".
+//
+// The comparison is performed based on the value type of the Atom's value.
+// - If the value is an int, the comparison is done numerically:
+//   - If the Atom's value is less than the other Atom's value, -1 is returned.
+//   - If the Atom's value is greater than the other Atom's value, 1 is returned.
+//   - If the Atom's value is equal to the other Atom's value, 0 is returned.
+//   - If the value is a float64, the comparison is done numerically in the same
+//     way as for int values.
+//   - If the value is a string, the comparison is done lexicographically:
+//   - If the Atom's value is lexicographically less than the other Atom's value,
+//     -1 is returned.
+//   - If the Atom's value is lexicographically greater than the other Atom's
+//     value, 1 is returned.
+//   - If the Atom's value is equal to the other Atom's value, 0 is returned.
+//   - If the value is of any other type, a panic is triggered with the message
+//     "Unsupported type for comparison".
 func (a *Atom) Compare(other Object) int {
 	otherAtom, ok := other.(*Atom)
 	if !ok {
@@ -67,7 +90,12 @@ func (a *Atom) Compare(other Object) int {
 	}
 }
 
-// Equals checks if the Atom is equal to another Object.
+// Equals checks if the current Atom object is equal to the given object.
+// It returns true if the objects are equal and false otherwise.
+// The comparison is based on the value field of the Atom objects.
+// The given object must be of type Atom, otherwise it returns false.
+// This method is case-sensitive for string comparison.
+// Example usage can be found in the TestAtom_Equals function.
 func (a *Atom) Equals(other Object) bool {
 	otherAtom, ok := other.(*Atom)
 	if !ok {
@@ -76,19 +104,26 @@ func (a *Atom) Equals(other Object) bool {
 	return a.value == otherAtom.value
 }
 
-// Hash returns a hash code for the Atom.
+// Hash returns the hash code for the Atom value. It computes the hash value by
+// converting the value to a string and then hashing the string using the
+// FNV-1a 32-bit algorithm. The resulting hash code is converted to an int and
+// returned.
 func (a *Atom) Hash() int {
 	h := fnv.New32a()
 	h.Write([]byte(fmt.Sprintf("%v", a.value)))
 	return int(h.Sum32())
 }
 
-// String returns a string representation of the Atom.
+// String returns a string representation of the Atom's value.
 func (a *Atom) String() string {
 	return fmt.Sprintf("%v", a.value)
 }
 
-// Size returns the size of the Atom in bytes.
+// Size returns the size in bytes of the Atom's value.
+// If the value is an int, it assumes a size of 8 bytes (assuming 64-bit int).
+// If the value is a float64, it assumes a size of 8 bytes (assuming 64-bit float).
+// If the value is a string, it returns the length of the string.
+// If the value is of any other type, it panics with the message "Unsupported type for size calculation".
 func (a *Atom) Size() int {
 	switch v := a.value.(type) {
 	case int:

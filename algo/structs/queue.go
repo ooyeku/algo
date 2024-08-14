@@ -17,27 +17,37 @@ package structs
 import "sync"
 
 // Queue represents a thread-safe queue data structure.
+// It uses a mutex to ensure exclusive access to the underlying slice.
+// The queue supports the operations Enqueue, Dequeue, Peek, IsEmpty, and Size.
+// Enqueue adds an item to the end of the queue.
+// Dequeue removes and returns the item from the front of the queue.
+// Peek returns the item from the front of the queue without removing it.
+// IsEmpty checks if the queue is empty and returns a boolean value.
+// Size returns the number of items in the queue.
 type Queue struct {
 	mu    sync.Mutex
 	items []interface{}
 }
 
-// NewQueue creates a new queue.
+// NewQueue creates a new instance of the Queue data structure with an empty list of items.
 func NewQueue() *Queue {
 	return &Queue{
 		items: make([]interface{}, 0),
 	}
 }
 
-// Enqueue adds an item to the end of the queue.
+// Enqueue adds an item to the queue.
+// It acquires a lock on the queue, appends the item to the underlying slice,
+// and then releases the lock.
 func (q *Queue) Enqueue(item interface{}) {
 	q.mu.Lock()
 	defer q.mu.Unlock()
 	q.items = append(q.items, item)
 }
 
-// Dequeue removes and returns the item from the front of the queue.
-// It returns nil if the queue is empty.
+// Dequeue removes and returns the first item from the queue. If the queue is empty,
+// it returns nil. The method is thread-safe, and it uses a mutex to synchronize access
+// to the queue.
 func (q *Queue) Dequeue() interface{} {
 	q.mu.Lock()
 	defer q.mu.Unlock()
@@ -49,8 +59,7 @@ func (q *Queue) Dequeue() interface{} {
 	return item
 }
 
-// Peek returns the item at the front of the queue without removing it.
-// It returns nil if the queue is empty.
+// Peek returns the first element in the queue without removing it. If the queue is empty, it returns nil.
 func (q *Queue) Peek() interface{} {
 	q.mu.Lock()
 	defer q.mu.Unlock()
@@ -60,14 +69,14 @@ func (q *Queue) Peek() interface{} {
 	return q.items[0]
 }
 
-// IsEmpty checks if the queue is empty.
+// IsEmpty returns true if the queue is empty, false otherwise. It locks the queue for thread safety.
 func (q *Queue) IsEmpty() bool {
 	q.mu.Lock()
 	defer q.mu.Unlock()
 	return len(q.items) == 0
 }
 
-// Size returns the number of items in the queue.
+// Size returns the number of elements in the queue.
 func (q *Queue) Size() int {
 	q.mu.Lock()
 	defer q.mu.Unlock()
