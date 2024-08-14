@@ -26,24 +26,25 @@ go get github.com/ooyeku/algo
 package main
 
 import (
-    "fmt"
-	"github.com/ooyeku/algo"
-	"github.com/ooyeku/algo/searching"
-	"github.com/ooyeku/algo/sorting"
+	"fmt"
+	algo "github.com/ooyeku/algo/algo"
+	"github.com/ooyeku/algo/algo/searching"
+	"github.com/ooyeku/algo/algo/sorting"
 )
 
 func main() {
-    // Generate a list of 100 random integers
-    list := algo.GenerateList(100, 1, 1000000)
-    // Sort the list using QuickSort
-    sortedList := sorting.QuickSort(list)
-    // Search for a value using BinarySearch
-    target := sortedList[50]
-    index := searching.BinarySearch(sortedList, target)
-    fmt.Printf("Binary Search: Target %d found at index %d\n", target, index)
-    // Benchmark sorting algorithms
-    benchmark := algo.CompareSortAlgorithms(list)
-    fmt.Printf("Fastest sorting algorithm: %s\n", benchmark.Fastest)
+	// Generate a list of 100 random integers
+	list := algo.GenerateList(100, 1, 1000000)
+	// Sort the list using QuickSort
+	sortedList := sorting.QuickSort(list)
+	// Search for a value using BinarySearch
+	target := sortedList[50]
+	index := searching.BinarySearch(sortedList, target)
+	fmt.Printf("Binary Search: Target %d found at index %d\n", target, index)
+	// Benchmark sorting algorithms
+	benchmark := algo.CompareSortAlgorithms(list)
+	fmt.Println(benchmark.Results)
+	fmt.Printf("Fastest sorting algorithm: %s\n", benchmark.Fastest)
 }
 ```
 
